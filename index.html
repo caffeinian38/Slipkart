@@ -485,11 +485,11 @@
 
         function isInCart(product) {
             const cart = getCart();
-            return cart.some(item => item.name === product.name && item.price === product.price);
+            return cart.some(item => item && item.name === product.name && item.price === product.price);
         }
         function isInWishlist(product) {
             const wishlist = getWishlist();
-            return wishlist.some(item => item.name === product.name && item.price === product.price);
+            return wishlist.some(item => item && item.name === product.name && item.price === product.price);
         }
 
         function renderProducts(productList) {

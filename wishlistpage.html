@@ -243,7 +243,13 @@
                 button.textContent = "Already in cart";
                 button.disabled = true;
             } else {
-                cart.push(product);
+                // Always add quantity property for cart compatibility
+                let imagePath = product.image;
+                if (!imagePath.startsWith('images/')) {
+                    imagePath = 'images/' + imagePath;
+                }
+                const productForCart = { ...product, image: imagePath, quantity: 1 };
+                cart.push(productForCart);
                 localStorage.setItem("cart", JSON.stringify(cart));
                 button.textContent = "Already in cart";
                 button.disabled = true;
