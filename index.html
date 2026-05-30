@@ -503,7 +503,7 @@
                     <a class="title" href="${product.link}"><p class="name">${product.name}</p></a>
                     <h4 class="price">${product.price}</h4>
                     <button class="addtocart" ${inCart ? 'disabled' : ''}>${inCart ? 'Added' : 'Add to cart'}</button>
-                    <button>Buy Now</button>
+                    <button onclick="alert('Add the product to cart first!')">Buy Now</button>
                     <button class="wishlist-btn${inWishlist ? ' active' : ''}"><img src="images/${inWishlist ? 'redlikebtn.png' : 'whitelikebtn.png'}"></button>
                 </div>
             `;

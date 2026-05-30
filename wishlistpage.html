@@ -191,6 +191,9 @@
 
     } else {
         products.forEach(function (product) {
+            // Check if product is already in cart (convert IDs to numbers for comparison)
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const inCart = cart.some(item => Number(item.id) === Number(product.id));
             productsContainer.innerHTML += `
                 <div class="product" id="${product.id}">
                     <div class="image-container">
@@ -201,18 +204,18 @@
                                 <p>Remove from Wishlist</p>
                             </div>
                         </div>
-
                     </div>
                     <a class="title" href="${product.link}"><p class="name">${product.name}</p></a>
                     <div class="product-actions">
                         <h4 style="margin: 0;">${product.price}</h4>
-                        <button class="addtocart">Add to cart</button>
+                        <button class="addtocart" ${inCart ? 'disabled' : ''}>${inCart ? 'Already in cart' : 'Add to cart'}</button>
                     </div>
                 </div>
             `;
         });
     }
 
+    // Add event listeners for Remove from Wishlist
     let dropdowns = document.querySelectorAll(".dropdown-menu");
     dropdowns.forEach(function (dropdown) {
         dropdown.querySelector("p").addEventListener("click", function () {
@@ -223,6 +226,28 @@
             });
             localStorage.setItem("wishlist", JSON.stringify(wishlist));
             document.getElementById(productId).remove();
+        });
+    });
+
+    // Add event listeners for Add to Cart buttons
+    let addToCartButtons = document.querySelectorAll(".addtocart");
+    addToCartButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            const productDiv = button.closest('.product');
+            const productId = Number(productDiv.id);
+            const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+            const product = wishlist.find(item => Number(item.id) === productId);
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const inCart = cart.some(item => Number(item.id) === productId);
+            if (inCart) {
+                button.textContent = "Already in cart";
+                button.disabled = true;
+            } else {
+                cart.push(product);
+                localStorage.setItem("cart", JSON.stringify(cart));
+                button.textContent = "Already in cart";
+                button.disabled = true;
+            }
         });
     });
 </script>
