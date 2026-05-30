@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slipkart - Online Shopping</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .product img {
+            width: 220px;
+            height: 280px;
+            border-radius: 5px;
+            object-fit: contain;
+        }
+
+        .name {
+            width: 220px;
+            font-size: 14px;
+            max-width: 240px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product {
+            display: inline-block;
+            padding: 10px;
+            text-align: center;
+            vertical-align: top;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            margin: 8px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            margin-top: 0;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-container input {
+            flex: 1;
+            max-width: 400px;
+            height: 25px;
+        }
+
+        #cart {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: none;
+        }
+
+        .heading {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color: rgb(177, 75, 3);
+            text-decoration: underline;
+            text-decoration-color: rgb(177, 75, 3);
+            margin: 0;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            transition: 0.1s;
+            cursor: pointer;
+        }
+
+        .category {
+            margin-bottom: 30px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: rgb(177, 75, 3);
+            border-bottom: 3px solid rgb(177, 75, 3);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        h4 {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        button {
+            margin: 2px;
+            padding: 8px 15px;
+            background-color: #ff9900;
+            border: none;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .categories {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+
+        }
+
+        .cat-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            border-radius: 20px;
+            margin: 0;
+            gap: 2px;
+            height: 25px;
+            box-sizing: border-box;
+
+
+
+        }
+
+        .cat-btn img {
+            width: 17px;
+            height: 17px;
+            margin-right: 2px;
+        }
+
+        .wishlist-btn {
+            background: transparent !important;
+            border: none;
+            padding: 0;
+            margin-top: -15px;
+            cursor: pointer;
+        }
+
+        .wishlist-btn img {
+            width: 20px;
+            height: 20px;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #wishlist {
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="header-container">
+
+        <a href="cart.html">
+            <h2 class="heading">Slipkart</h2>
+        </a>
+        <input type="text" placeholder="Search for products, brands and more"
+            style="width: 300px; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+        <a href="cartpage.html"><button id="cart"> <img style="width:30px;" src="images/cart.png"> </button></a>
+        <a href="wishlistpage.html"><button id="wishlist"> <img style="width:30px;" src="images/wishlist.png">
+            </button></a>
+    </div>
+
+    <div class="categories">
+        <button class="cat-btn" data-category="all"> <img src="images/AllLogo.png">All</button>
+        <button class="cat-btn" data-category="shoes"><img src="images/ShoeLogo.png">Shoes</button>
+        <button class="cat-btn" data-category="clothes"><img src="images/ClothesLogo.png">Clothes</button>
+        <button class="cat-btn" data-category="electronics"><img src="images/ElectronicLogo.png">Electronics</button>
+        <button class="cat-btn" data-category="mobiles"><img src="images/MobileLogo.png">Mobiles</button>
+        <button class="cat-btn" data-category="beauty"><img src="images/BeautyLogo.png">Beauty</button>
+        <button class="cat-btn" data-category="appliances"><img src="images/AppliancesLogo.png">Appliances</button>
+        <button class="cat-btn" data-category="toys"><img src="images/ToysLogo.png">Toys</button>
+    </div>
+
+
+
+    <div id="products-container"></div>
+
+
+    <script>
+        const productsContainer = document.getElementById("products-container");
+        const products = [
+            {
+                id: 1,
+                category: "shoes",
+                name: "NIKE Court Legacy Next Nature Sneakers For Women (White , 5) ",
+                price: "$89",
+                image: "nike2.jpeg",
+                link: "https://www.flipkart.com/nike-wmns-court-legacy-nn-sneakers-women/p/itm65f2bc6682f9b?pid=SHOHFBBMUPC2SYRH&marketplace=FLIPKART&lid=LSTSHOHFBBMUPC2SYRH5NS5P9&q=NIKE+Court+Legacy+Next+Nature+Sneakers+For+Women+%28White+%2C+5%29&fm=organic&swatchAttr=size&pageUID=1780143288856"
+            },
+            {
+                id: 2,
+                category: "shoes",
+                name: "Puma Zarsun Sneakers For Men (Beige , 7) ",
+                price: "$74",
+                image: "puma_shoes.jpeg",
+                link: "https://www.flipkart.com/puma-zarsun-sneakers-men/p/itm4946bfddac7af?pid=SHOHFYRGDFZGHUX7&marketplace=FLIPKART&lid=LSTSHOHFYRGDFZGHUX7EMOICK&q=Puma+Zarsun+Sneakers+For+Men+%28Beige+%2C+7%29&fm=Search&pageUID=1780143425550"},
+            {
+                id: 3,
+                category: "shoes",
+                name: "Adidas Street Icon Pro 2.0 M Sneakers For Men (Black , 9)",
+                price: "$99",
+                image: "adidas_shoes.jpeg",
+                link: "https://www.flipkart.com/adidas-street-icon-pro-2-0-m-sneakers-men/p/itm3f66a760bedf0"
+            },
+            {
+                id: 4,
+                category: "shoes",
+                name: "REDTAPE Lifestyle Elevated Everyday Style Sneakers For Women (Beige, Brown , 6)",
+                price: "$62",
+                image: "redtape1.png",
+                link: "https://www.flipkart.com/red-tape-lifestyle-elevated-everyday-style-sneakers-women/p/itm131eef30fb7af?pid=SHOHHKHJFG5SW7F9&lid=LSTSHOHHKHJFG5SW7F9F46SAC&marketplace=FLIPKART&cmpid=content_shoe_8965229628_gmc"
+            },
+            {
+                id: 5,
+                category: "shoes",
+                name: "NIKE Court Borough Low Sneakers For Men (White , 8)",
+                price: "$110",
+                image: "shoe4-nike.webp",
+                link: "https://www.flipkart.com/nike-court-borough-low-sneakers-men/p/itm8a905c7c30688"
+            },
+            {
+                id: 6,
+                category: "shoes",
+                name: "Snitch Men's Orbit V1 Blue Colourblock Sneakers",
+                price: "$55",
+                image: "shoe6.jpeg",
+                link: "https://www.snitch.com/men-shoes/white-colorblock-sneakers-sh0167-01/8785085169826/buy?utm_source=google&utm_medium=cpc&utm_campaign=22148173910&utm_term=&utm_content=&gad_source=4&gad_campaignid=22148178857&gbraid=0AAAAACTMOKrChw6uQP7MCenlJy1dauv4m&gclid=Cj0KCQjwlerQBhDMARIsAB16H-UZzJq03yo6NJP3dmZztKX8M0woCq-kW51Op6uM_huOgiKtL3AbWQcaAuF7EALw_wcB"
+            },
+            {
+                id: 7,
+                category: "shoes",
+                name: "GAMBO Men's Sneakers",
+                price: "$45",
+                image: "shoe7.jpeg",
+                link: "https://www.campusshoes.com/products/gambo-l-gry-blk-mens-sneakers"
+            },
+            {
+                id: 8,
+                category: "shoes",
+                name: "Bata Men Lace-up Sneaker",
+                price: "$38",
+                image: "shoe8.jpeg",
+                link: "https://www.amazon.in/Bata-8314211-Mens-Dumble-SneakerSneaker/dp/B0CK56SL8J"
+            },
+            {
+                id: 9,
+                category: "Clothes",
+                name: "Snitch Men's Nordic Beige Polo T-Shirt",
+                price: "$19",
+                image: "Snitch Men's Nordic Beige Polo T-Shirt.jpeg",
+                link: "https://www.snitch.com/men-t-shirts/nordic-beige-polo-t-shirt/8065544847522/buy?utm_source=google&utm_medium=cpc&utm_campaign=22148173910&utm_term=&utm_content=&gad_source=1&gad_campaignid=22148178857&gbraid=0AAAAACTMOKqn3hUip-LMHpQG2XwkKxfPz&gclid=Cj0KCQjwlerQBhDMARIsAB16H-V-MjkgrxkyPawt5xvrdIjK7NygTf704EhxLVajCkhynhWMVMKHzqYaApaeEALw_wcB"
+            },
+            {
+                id: 10,
+                category: "Clothes",
+                name: "Nobero Men's Unisex Print T-Shirt",
+                price: "$15",
+                image: "Nobero Men's Unisex Print T-Shirt.jpeg",
+                link: "https://nobero.com/products/no-rules-to-enjoy-classic-fit-t-shirt?variant=44884105560230"
+            },
+            {
+                id: 14,
+                category: "Clothes",
+                name: "Men's Half Sleeve Plain Round Neck T-Shirts",
+                price: "$13",
+                image: "Men's Half Sleeve Plain Round Neck T-Shirts.jpeg",
+                link: "https://dl.flipkart.com/dl/tripr-solid-men-round-neck-multicolor-t-shirt/p/itm519bdf30b4a74?_refId=&_appId=CL"
+            },
+            {
+                id: 15,
+                category: "Electronics",
+                name: "boAt Rockerz 425 Wireless Bluetooth Headphone",
+                price: "$32",
+                image: "boAt Rockerz 425 Wireless Bluetooth Headphone.jpeg",
+                link: "https://www.reliancedigital.in/product/boat-rockerz-425-bluetooth-wireless-on-ear-headphones-signature-sound-enx-tech-asap-charge-25-h-playtime-bluetooth-v52-dual-pairing-with-mic-active-black-m0dwey-8536583?region_id=RDHD17&gad_source=1&gad_campaignid=22584995645&gbraid=0AAAAADthdYk4jnx0ht6BbA8zy1G7dHifT&gclid=Cj0KCQjwlerQBhDMARIsAB16H-XelIh8eEoD0LtZ7wM1fXai4e4zx9yNN2OFkpV9OkurwdbvLh6Ql-saAmQhEALw_wcB"
+            },
+            {
+                id: 16,
+                category: "Electronics",
+                name: "Portronics Muffs M2 Wireless Over Ear Headphones",
+                price: "$29",
+                image: "Portronics Muffs M2 Wireless Over Ear Headphones.jpeg",
+                link: "https://www.amazon.in/Portronics-Bluetooth-Headphones-Playtime-Powerful/dp/B0C4HDNDGN/ref=asc_df_B0C4HDNDGN?mcid=6a295adf4ac73acf854d78c03af6d4b3&tag=googleshopdes-21&linkCode=df0&hvadid=709962856241&hvpos=&hvnetw=g&hvrand=18225014699859347053&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9062140&hvtargid=pla-2194558026602&hvocijid=18225014699859347053-B0C4HDNDGN-&hvexpln=0&gad_source=1&th=1"
+            },
+            {
+                id: 17,
+                category: "Electronics",
+                name: "boAt Rockerz 421 Headphones",
+                price: "$35",
+                image: "boAt Rockerz 421 Headphones.jpeg",
+                link: "https://www.amazon.in/boAt-Rockerz-Bluetooth-Headphones-Headphone/dp/B0F7LZ2GW2/ref=asc_df_B0F7M3Q8DV?mcid=64c71b7f359531c69b3f61f1b3c11c89&tag=googleshopdes-21&linkCode=df0&hvadid=709962856211&hvpos=&hvnetw=g&hvrand=7482637359317774148&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9062140&hvtargid=pla-2482458987327&hvocijid=7482637359317774148-B0F7M3Q8DV-&hvexpln=0&gad_source=1&th=1"
+            },
+            {
+                id: 18,
+                category: "Electronics",
+                name: "Zebronics Zeb-Storm On Ear Wired Headphone",
+                price: "$18",
+                image: "Zebronics Zeb-Storm On Ear Wired Headphone.jpeg",
+                link: "https://www.amazon.in/ZEBRONICS-Zeb-Storm-Microphone-Adjustable-Lightweight/dp/B0B4G44RFS/ref=asc_df_B0B4G44RFS?mcid=d7dc995615433cc99a25a5e3067f040d&tag=googleshopdes-21&linkCode=df0&hvadid=709962856241&hvpos=&hvnetw=g&hvrand=7229825911485289011&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9062140&hvtargid=pla-1718591584981&hvocijid=7229825911485289011-B0B4G44RFS-&hvexpln=0&gad_source=1&th=1"
+            },
+            {
+                id: 19,
+                category: "Mobiles",
+                name: "OnePlus Nord CE5 5G",
+                price: "$299",
+                image: "OnePlus Nord CE5 5G.jpeg",
+                link: "https://www.flipkart.com/oneplus-nord-ce5-5g-nexus-blue-128-gb/p/itm9259708fe4e3c?pid=MOBHEYWZJTSYPHBM&marketplace=FLIPKART&lid=LSTMOBHEYWZJTSYPHBMXLGW7M&pageUID=1780148345564"
+            },
+            {
+                id: 20,
+                category: "Mobiles",
+                name: "Nothing Phone 2 5G",
+                price: "$349",
+                image: "Nothing Phone.jpeg",
+                link: "https://www.amazon.in/Nothing-Storage-Snapdragon-Charging-Expansion/dp/B0DZTMZL4X/ref=pd_lpo_d_sccl_1/523-6477330-9214039?pd_rd_w=Pu54h&content-id=amzn1.sym.e0c8139c-1aa1-443c-af8a-145a0481f27c&pf_rd_p=e0c8139c-1aa1-443c-af8a-145a0481f27c&pf_rd_r=6HW11EWNC7ZSY7ENHPG5&pd_rd_wg=nrHZm&pd_rd_r=ce643a52-c459-4289-8e1d-5e796e0f9eed&pd_rd_i=B0DZTMZL4X&psc=1"
+            },
+            {
+                id: 21,
+                category: "Mobiles",
+                name: "Google Pixel 7a",
+                price: "$379",
+                image: "Google Pixel 7a.jpeg",
+                link: "https://www.flipkart.com/google-pixel-7a-sea-128-gb/p/itmb4d7b100b1a4d?pid=MOBGZCQM8PZEGRWU&lid=LSTMOBGZCQM8PZEGRWUXKFKOQ&marketplace=FLIPKART&cmpid=content_mobile_23459573220_g_8965229628_gmc_pla&tgi=sem,1,G,11214002,g,search,,792939238969,,,,c,,,,,,,&entryMethod=23459573220&&cmpid=content_23459573220_gmc_pla&gad_source=1&gad_campaignid=23459573220&gbraid=0AAAAADxRY5_9cwezf7Ut2Nu2CZjU6Ke4o&gclid=Cj0KCQjwlerQBhDMARIsAB16H-Xnv3COZKkqRq4O4vZPrmJdDwrMLNm9CftSI27LOdLtlN4j2-1JyVEaAkSGEALw_wcB"
+            },
+            {
+                id: 22,
+                category: "Mobiles",
+                name: "Google Pixel 9a 5G",
+                price: "$429",
+                image: "Google Pixel 9a 5G.jpeg",
+                link: "https://www.flipkart.com/google-pixel-9a-obsidian-256-gb/p/itmf9d1fcfa566cf"
+            },
+            {
+                id: 23,
+                category: "Beauty",
+                name: "The Derma Co 10% Niacinamide Face Serum",
+                price: "$12",
+                image: "The Derma Co 10 Niacinamide Face Serum.jpeg",
+                link: "https://www.flipkart.com/derma-co-10-niacinamide-face-serum-acne-marks-prone-skin-men-women/p/itm2a57da442a24a"
+            },
+            {
+                id: 24,
+                category: "Beauty",
+                name: "Foxtale Brightening Face Serum",
+                price: "$10",
+                image: "Foxtale Brightening Face Serum.jpeg",
+                link: "https://www.flipkart.com/foxtale-vitamin-c-serum-15-l-ascorbic-acid-1-e-brightening-30ml/p/itmb7520408c73b0"
+            },
+            {
+                id: 25,
+                category: "Beauty",
+                name: "The Ordinary Niacinamide 10% + Zinc 1%",
+                price: "$15",
+                image: "The Ordinary Niacinamide 10  Zinc 1.jpeg",
+                link: "https://www.flipkart.com/ordinary-niacinamide-10-zinc-1/p/itm14cf6acfe3e7b"
+            },
+            {
+                id: 26,
+                category: "Beauty",
+                name: "Beauty Of Joseon Glow Serum",
+                price: "$17",
+                image: "Beauty Of Joseon Glow Serum.jpeg",
+                link: "https://www.flipkart.com/beauty-joseon-glow-serum/p/itmcdcdc07cf3e05"
+            },
+            {
+                id: 27,
+                category: "Appliances",
+                name: "Nutripro 500 Watts Juicer Mixer Grinder",
+                price: "$49",
+                image: "Nutripro 500 Watts Juicer Mixer Grinder.jpeg",
+                link: "https://www.flipkart.com/nutripro-blender-500-w-juicer-mixer-grinder/p/itm3c154e16da2da"
+            },
+            {
+                id: 28,
+                category: "Appliances",
+                name: "Philips HR1400/00 Hand Blender",
+                price: "$39",
+                image: "Philips HR140000 Hand Blender.jpeg",
+                link: "https://www.amazon.in/Philips-HR1400-00-Lightweight-Detachable/dp/B0FW5N46X4"
+            },
+            {
+                id: 29,
+                category: "Appliances",
+                name: "Croma 450 Watt Personal Blender",
+                price: "$35",
+                image: "Croma 450 Watt Personal Blender.jpeg",
+                link: "https://www.flipkart.com/croma-personal-blender-450w-copper-motor-3-multipurpose-jars-crskah401sjc3j-teal-green-450-w-hand/p/itmf836e7e91cbe1"
+            },
+            {
+                id: 30,
+                category: "Toys",
+                name: "Webby Kids ABS Building Blocks Construction Set",
+                price: "$22",
+                image: "Webby Kids ABS Building Blocks Construction Set.jpeg",
+                link: "https://www.flipkart.com/webby-abs-building-blocks-construction-set-activity-toys-kids-250-pieces/p/itmaa9fdd06e25e6"
+            },
+            {
+                id: 31,
+                category: "Toys",
+                name: "Toyztrend Expert Building Blocks for Kids",
+                price: "$18",
+                image: "Toyztrend Expert Building Blocks for Kids.jpeg",
+                link: "https://www.flipkart.com/toyz-trend-premium-quality-building-blocks-interlocking/p/itm026b3ffa3f62a"
+            },
+            {
+                id: 32,
+                category: "Toys",
+                name: "House Building Blocks Toy LW-9909",
+                price: "$20",
+                image: "House Building Blocks Toy LW-9909.jpeg",
+                link: "https://www.meesho.com/new-arrival-happy-house-block-construction-gift-set-for-kids-multicolor/p/aemtq0?utm_source=google&utm_medium=cpc&utm_term=gmc&srsltid=AfmBOorkRAgF2poE9lDwc7fQU-hbB1nsyb0kRvYGm7tA-iiGlBIJ1-GoxNE"
+            },
+            {
+                id: 33,
+                category: "Toys",
+                name: "Wizplex MSZ Official Licensed BMW M4 GT3 Diecast Model Car 1 43 Scale  Premium Metal Collectible Replica  Display Showpiece & Gift for Car Lovers",
+                price: "$44",
+                image: "Wizplex MSZ Official Licensed BMW M4 GT3 Diecast Model Car 1 43 Scale  Premium Metal Collectible Replica  Display Showpiece & Gift for Car Lovers.jpeg",
+                link: "https://www.amazon.in/Wizplex-Official-Licensed-Diecast-Model/dp/B0GCFQLF1Z/ref=asc_df_B0GCFQLF1Z?mcid=5c9c686906fe3333b4bb9a36eb68f509&tag=googleshopdes-21&linkCode=df0&hvadid=710008639099&hvpos=&hvnetw=g&hvrand=7137978034774436954&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9062140&hvtargid=pla-2465589287660&psc=1&hvocijid=7137978034774436954-B0GCFQLF1Z-&hvexpln=0&gad_source=1"
+            }
+        ]
+
+        // Helper functions
+        function getCart() {
+            return JSON.parse(localStorage.getItem("cart")) || [];
+        }
+        function setCart(cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+        function getWishlist() {
+            return JSON.parse(localStorage.getItem("wishlist")) || [];
+        }
+        function setWishlist(wishlist) {
+            localStorage.setItem("wishlist", JSON.stringify(wishlist));
+        }
+
+        function isInCart(product) {
+            const cart = getCart();
+            return cart.some(item => item.name === product.name && item.price === product.price);
+        }
+        function isInWishlist(product) {
+            const wishlist = getWishlist();
+            return wishlist.some(item => item.name === product.name && item.price === product.price);
+        }
+
+        function renderProducts(productList) {
+            productsContainer.innerHTML = "";
+            productList.forEach(function (product) {
+                const inCart = isInCart(product);
+                const inWishlist = isInWishlist(product);
+                productsContainer.innerHTML += `
+                <div class="product" id="${product.id}">
+                    <a class="${product.category}" href="${product.link}"><img src="images/${product.image}" alt="${product.name}"></a>
+                    <a class="title" href="${product.link}"><p class="name">${product.name}</p></a>
+                    <h4 class="price">${product.price}</h4>
+                    <button class="addtocart" ${inCart ? 'disabled' : ''}>${inCart ? 'Added' : 'Add to cart'}</button>
+                    <button>Buy Now</button>
+                    <button class="wishlist-btn${inWishlist ? ' active' : ''}"><img src="images/${inWishlist ? 'redlikebtn.png' : 'whitelikebtn.png'}"></button>
+                </div>
+            `;
+            });
+
+            // Add to cart logic
+            let addtocart = document.querySelectorAll(".addtocart");
+            addtocart.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    let productBtn = button.closest(".product");
+                    let nameBtn = productBtn.querySelector(".name").innerText;
+                    let priceBtn = productBtn.querySelector(".price").innerText;
+                    let imageBtn = productBtn.querySelector("img").src;
+                    let item = {
+                        name: nameBtn,
+                        price: priceBtn,
+                        image: imageBtn,
+                        quantity: 1
+                    };
+                    let cart = getCart();
+                    if (!cart.some(i => i.name === item.name && i.price === item.price)) {
+                        cart.push(item);
+                        setCart(cart);
+                    }
+                    button.innerText = "Added";
+                    button.disabled = true;
+                });
+            });
+
+            // Wishlist logic
+            let wishlistBtns = document.querySelectorAll(".wishlist-btn");
+            wishlistBtns.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    let productBtn = button.closest(".product");
+                    let nameBtn = productBtn.querySelector(".name").innerText;
+                    let priceBtn = productBtn.querySelector(".price").innerText;
+                    let imageBtn = productBtn.querySelector("img").src;
+                    let item = {
+                        name: nameBtn,
+                        price: priceBtn,
+                        image: imageBtn,
+                        quantity: 1
+                    };
+                    let wishlist = getWishlist();
+                    let heartImg = button.querySelector("img");
+                    if (button.classList.contains("active")) {
+                        // Remove from wishlist
+                        wishlist = wishlist.filter(i => !(i.name === item.name && i.price === item.price));
+                        setWishlist(wishlist);
+                        button.classList.remove("active");
+                        heartImg.src = "images/whitelikebtn.png";
+                    } else {
+                        // Add to wishlist if not already present
+                        if (!wishlist.some(i => i.name === item.name && i.price === item.price)) {
+                            wishlist.push(item);
+                            setWishlist(wishlist);
+                        }
+                        button.classList.add("active");
+                        heartImg.src = "images/redlikebtn.png";
+                    }
+                });
+            });
+        }
+
+
+
+        let Input_bar = document.querySelector("input");
+        Input_bar.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                let query = Input_bar.value.trim();
+                if (query) {
+                    let products = document.querySelectorAll(".product");
+                    products.forEach(function (product) {
+                        let name = product.querySelector(".name").innerText.toLowerCase();
+                        if (name.includes(query)) {
+                            product.style.display = "inline-block";
+                        }
+                        else {
+                            product.style.display = "none";
+
+                        }
+                    })
+                }
+            }
+        });
+
+        // Use new renderProducts function everywhere
+
+
+
+
+
+
+
+        // Initial render
+        renderProducts(products);
+
+        let catButtons = document.querySelectorAll(".cat-btn");
+        catButtons.forEach(function (button) {
+            button.addEventListener("click", () => {
+                const category = button.dataset.category;
+                if (category === "all") {
+                    renderProducts(products);
+                } else {
+                    const filteredProducts = products.filter(product => product.category.toLowerCase() === category.toLowerCase());
+                    renderProducts(filteredProducts);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

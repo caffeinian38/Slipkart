@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cartPage</title>
+
+    <style>
+        body {
+            font-family: arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .cart-container {
+            width: 60%;
+            margin: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+
+        }
+
+        .cart-item:hover {
+            transform: scale(1.02);
+            transition: 0.1s;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-name {
+            font-size: 17px;
+            font-weight: bold;
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .item-price {
+            color: green;
+            font-size: 15px;
+        }
+
+        .remove-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .total {
+            text-align: left;
+            font-size: 22px;
+            margin-top: 20px;
+
+            font-weight: bold;
+        }
+
+        .item-image {
+            width: 70px;
+            height: 80px;
+            margin-right: 10px;
+            border-radius: 3px;
+
+        }
+
+        .checkout-section {
+            display: flex;
+            justify-content: space-between;
+
+            width: 60%;
+            margin: auto;
+        }
+
+        .buy {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .buy:hover {
+            background-color: #0069d9;
+            transform: scale(1.05);
+            transition: 0.1s;
+        }
+        h2{
+            margin-top: 20px;
+            margin-left:20px;
+            font-size: 28px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h2>Cart</h2>
+
+    <div class="cart-container" id="cartItems"></div>
+
+    <div class="checkout-section">
+        <div class="total" id="total-price"></div>
+        <a href="addresspage.html"><button class="buy">Buy</button></a>
+    </div>
+
+
+
+    <script>
+
+        function loadcart() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let container = document.getElementById("cartItems");
+            let totalBox = document.getElementById("total-price");
+
+            if (cart.length == 0) {
+                container.innerHTML = "<h3>Your cart is empty</h3>";
+                totalBox.innerText = "Total: $0.00";
+                return;
+            }
+
+            container.innerHTML = "";
+            let total = 0;
+
+            cart.forEach(function (item, index) {
+                let div = document.createElement("div");
+                div.className = "cart-item";
+                let priceNumber = parseFloat(item.price.replace("$", ""));
+                total += priceNumber * item.quantity;
+
+                div.innerHTML = `
+                <div class="left-section">
+                <img src="${item.image}" class="item-image">
+                <div class="item-info">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">${item.price}</div>
+                    <div class="item-quantity">
+                        <button onclick="decreaseQuantity(${index})">-</button>
+                        ${item.quantity}
+                        <button onclick="increaseQuantity(${index})">+</button>
+                    </div>
+                 </div>
+                </div>
+                 <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+                
+                `;
+                container.appendChild(div);
+            });
+            totalBox.innerText = "Total: $" + total;
+
+
+
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadcart();
+        }
+
+        function increaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart[index].quantity++;
+            localStorage.setItem("cart", JSON.stringify(cart));
+            loadcart();
+
+        }
+
+        function decreaseQuantity(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+                localStorage.setItem("cart", JSON.stringify(cart));
+                loadcart();
+            }
+        }
+        loadcart();
+    </script>
+</body>
+
+</html>

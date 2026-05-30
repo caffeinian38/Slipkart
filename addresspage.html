@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Entry Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:#e6e5e5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .location-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .location-section h3 {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .location-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .location-btn:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .location-btn:disabled {
+            background: #bbb;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .location-icon::before {
+            content: "📍";
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-reset:hover {
+            background: #e8e8e8;
+            border-color: #d0d0d0;
+        }
+
+        .message {
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Address Entry Form</h1>
+            <p>Please enter your complete address details</p>
+        </div>
+
+        <form id="addressForm">
+            <div id="message"></div>
+
+            <!-- Use My Location Section -->
+            <div class="location-section">
+                <h3>Quick Location</h3>
+                <button type="button" class="location-btn" id="useLocationBtn">
+                    <span class="location-icon"></span>
+                    Use My Current Location
+                </button>
+            </div>
+
+            <!-- Name -->
+            <div class="form-group">
+                <label for="name" class="required">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
+
+            <!-- Street Address -->
+            <div class="form-group">
+                <label for="street" class="required">Street Address</label>
+                <input type="text" id="street" name="street" placeholder="Enter your street address" required>
+            </div>
+
+            <!-- City and State Row -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city" class="required">City</label>
+                    <input type="text" id="city" name="city" placeholder="Enter city" required>
+                </div>
+                <div class="form-group">
+                    <label for="state" class="required">State/Province</label>
+                    <input type="text" id="state" name="state" placeholder="Enter state" required>
+                </div>
+            </div>
+
+            <!-- Postal Code and Country Row -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="postal" class="required">Postal Code</label>
+                    <input type="text" id="postal" name="postal" placeholder="Enter postal code" required>
+                </div>
+                <div class="form-group">
+                    <label for="country" class="required">Country</label>
+                    <input type="text" id="country" name="country" placeholder="Enter country" required>
+                </div>
+            </div>
+
+            <!-- Email and Phone Row -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter phone number">
+                </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-group">
+                <label for="notes">Additional Notes</label>
+                <input type="text" id="notes" name="notes"
+                    placeholder="e.g., Apartment number, delivery instructions, etc.">
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button type="submit" class="btn btn-submit">Save Address</button>
+                <button type="reset" class="btn btn-reset">Clear Form</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('addressForm');
+        const useLocationBtn = document.getElementById('useLocationBtn');
+        const messageDiv = document.getElementById('message');
+
+        // Use Location Button Click Handler
+        useLocationBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (!navigator.geolocation) {
+                showMessage('Geolocation is not supported by your browser', 'error');
+                return;
+            }
+
+            useLocationBtn.disabled = true;
+            useLocationBtn.textContent = '📍 Getting your location...';
+            showMessage('Fetching your location...', 'info');
+
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    // Reverse geocoding - convert coordinates to address
+                    reverseGeocode(lat, lon);
+                    useLocationBtn.disabled = false;
+                    useLocationBtn.innerHTML = '<span class="location-icon"></span> Use My Current Location';
+                },
+                function (error) {
+                    useLocationBtn.disabled = false;
+                    useLocationBtn.innerHTML = '<span class="location-icon"></span> Use My Current Location';
+
+                    let errorMsg = 'Unable to retrieve location. ';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        errorMsg += 'Please enable location permissions.';
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        errorMsg += 'Location information is unavailable.';
+                    } else if (error.code === error.TIMEOUT) {
+                        errorMsg += 'The request to get user location timed out.';
+                    }
+                    showMessage(errorMsg, 'error');
+                }
+            );
+        });
+
+        // Reverse Geocoding Function (using OpenStreetMap Nominatim API - Free)
+        function reverseGeocode(lat, lon) {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+
+            fetch(url, {
+                headers: {
+                    'Accept-Language': 'en'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const address = data.address;
+
+                    // Populate form fields with address data
+                    document.getElementById('street').value = address.road || address.hamlet || '';
+                    document.getElementById('city').value = address.city || address.town || address.village || '';
+                    document.getElementById('state').value = address.state || '';
+                    document.getElementById('postal').value = address.postcode || '';
+                    document.getElementById('country').value = address.country || '';
+
+                    showMessage('✓ Location retrieved successfully!', 'success');
+                })
+                .catch(error => {
+                    console.error('Geocoding error:', error);
+                    showMessage('Could not retrieve address details. Please fill in manually.', 'error');
+                });
+        }
+
+        // Show Message Function
+        function showMessage(message, type) {
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.className = 'message';
+                }, 5000);
+            }
+        }
+
+        // Form Submission
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (validateForm()) {
+                const formData = {
+                    name: document.getElementById('name').value,
+                    street: document.getElementById('street').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    postal: document.getElementById('postal').value,
+                    country: document.getElementById('country').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    notes: document.getElementById('notes').value
+                };
+
+                console.log('Form Data:', formData);
+                showMessage('✓ Address saved successfully!', 'success');
+                localStorage.setItem('addressdata', JSON.stringify(formData));
+                window.location.href = "ordersummary.html";
+                // Here you would typically send data to server
+                // fetch('/api/save-address', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(formData)
+                // })
+            }
+        });
+
+        // Form Validation
+        function validateForm() {
+            const requiredFields = ['name', 'street', 'city', 'state', 'postal', 'country'];
+            let isValid = true;
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#e74c3c';
+                } else {
+                    field.style.borderColor = '#e0e0e0';
+                }
+            });
+
+            if (!isValid) {
+                showMessage('Please fill in all required fields', 'error');
+            }
+
+            return isValid;
+        }
+
+        // Clear border color on input
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function () {
+                this.style.borderColor = '#667eea';
+            });
+            input.addEventListener('blur', function () {
+                this.style.borderColor = '#e0e0e0';
+            });
+        });
+    </script>
+</body>
+
+</html>

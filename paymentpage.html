@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>payment</title>
+</head>
+<style>
+    .heading { 
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color: rgb(177, 75, 3);
+            text-decoration: underline;
+            text-decoration-color: rgb(177, 75, 3);
+            margin-left: 5px;
+        }
+    .payment-container{
+        margin: 20px;
+        width: 60%;
+    }
+    .price-details-container{
+        width: 40%;
+        margin: 20px;
+        margin-right:20px;
+    }
+    #arrow-image{
+        width: 30px;
+        height: 20px;
+        fill: #333;
+        transition: fill 0.2s ease;
+        
+    }
+    #header-section{
+        display:flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .payment-option{
+        border-bottom: 1px solid #ddd;
+        padding: 15px 0;
+        width: 100%;
+        max-width: 350px;
+        transition: 0.2s; 
+        margin-left: 20px;
+    }
+    .payment-option label{
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .payment-option:hover {
+        transform: scale(1.1);
+        transition: 0.2s;
+    }
+    .payment-option input[type="radio"]:checked + label {
+        color: #000000;
+        font-weight: bold;
+        font-size: 22px;
+        transform: scale(1.1);
+        border-left: 1px solid #282c27;
+        padding-left: 10px;
+    }
+    .unavailable label{
+        color: #999;
+    }
+    .place-order button{
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #a1bd05;
+        width: 90%;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);        
+    }
+    .place-order button:hover{
+        background: #8aa404;
+        transform: translateX(-50%) scale(1.08);
+        transition: 0.2s;
+    }
+    .price-details{
+        margin-top: 10px;
+        background: white;
+        padding-top:10px;
+        padding-bottom:10px;
+        padding-left:20px;        
+        max-width: 350px;
+        margin-right: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        width:100%;
+    }
+    .price-row{
+        display: flex;
+        justify-content: space-between;
+        padding: 0px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        span{
+            padding-top: 15px;
+        }
+    }
+    .main-layout{
+        display: flex;
+        align-items: flex-start;
+        padding: 20px;
+    }
+</style>
+<body>
+    <a href="Homepage.html"><h2 class="heading">Slipkart</h2></a>
+    <div class="main-layout">
+        <div class="payment-container">
+            <div id="header-section">
+                <a href="ordersummary.html" class="button-style">
+                    <svg id="arrow-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                    <path d="M73.4 297.4C60.9 309.9 60.9 330.2 73.4 342.7L233.4 502.7C245.9 515.2 266.2 515.2 278.7 502.7C291.2 490.2 291.2 469.9 278.7 457.4L173.3 352L544 352C561.7 352 576 337.7 576 320C576 302.3 561.7 288 544 288L173.3 288L278.7 182.6C291.2 170.1 291.2 149.8 278.7 137.3C266.2 124.8 245.9 124.8 233.4 137.3L73.4 297.3z"/>
+                    </svg>
+                </a>
+                <h3>Payment</h3>
+            </div>
+            <div class="payment-option unavailable">
+                <input type="radio" id="credit-card" name="payment-method" hidden disabled>
+                <label for="credit-card">Credit / Debit Card</label>
+            </div>
+            <div class="payment-option unavailable">
+                <input type="radio" id="net-banking" name="payment-method" hidden disabled>
+                <label for="net-banking">Net Banking</label>
+            </div>
+            <div class="payment-option unavailable">
+                <input type="radio" id="upi" name="payment-method" hidden disabled>
+                <label for="upi">UPI</label>
+            </div>
+            <div class="payment-option">
+                <input type="radio" id="cash-on-delivery" name="payment-method" hidden>
+                <label for="cash-on-delivery">Cash on Delivery</label>
+            </div>
+
+        </div>
+
+        <div class="price-details-container">
+            <h3>Price Details</h3>
+            <div class="price-details">
+                <div class="price-row"><p>Price</p> <span id="price"></span></div>
+                <div class="price-row"><p>Fees</p> <span id="fees"></span></div>
+                <div class="price-row"><p>Delivery Charges</p> <span id="delivery-charges"></span></div>
+                <div class="price-row"><h3>Total Amount</h3> <span id="total"></span></div>
+
+                
+                
+              
+            </div>
+        </div>
+
+    </div>
+    <a href="ordersucess.html" class="place-order"><button>Place Order</button></a>
+
+    <script>
+        const priceElement = document.getElementById("price");
+        const feesElement = document.getElementById("fees");
+        const deliveryChargesElement = document.getElementById("delivery-charges");
+        const totalElement = document.getElementById("total");
+
+        const totalFromStorage = localStorage.getItem("total");
+        
+        const fees = 1;
+        const deliveryCharges = 2.8;
+        feesElement.innerText = `$${fees}`;
+        deliveryChargesElement.innerText = `$${deliveryCharges}`;
+        if (totalFromStorage) {
+            priceElement.innerText = `$${totalFromStorage}`;
+            totalElement.innerText = `$${(parseFloat(totalFromStorage) + fees + deliveryCharges).toFixed(2)}`;
+        } else {
+            priceElement.innerText = "$0.00";
+            totalElement.innerText = "$0.00";
+        }
+
+
+    </script>
+
+
+
+</body>
+</html>
